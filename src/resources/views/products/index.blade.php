@@ -11,18 +11,16 @@
 
         <!-- 検索フォーム -->
         <form action="{{ route('products.index') }}" method="GET" class="d-flex" style="gap: 8px;">
-            <input type="text" name="keyword" class="form-control" placeholder="商品名で検索">
+            <input type="text" name="keyword" class="form-control"
+                placeholder="商品名で検索"
+                value="{{ request('keyword') }}">
             <button class="btn btn-primary">検索</button>
         </form>
 
-        <!-- 並び替え -->
-        <form action="{{ route('products.index') }}" method="GET">
-            <select name="sort" class="form-select" onchange="this.form.submit()">
-                <option value="">価格順で表示</option>
-                <option value="low">価格で安い順</option>
-                <option value="high">価格で高い順</option>
-            </select>
-        </form>
+        <!-- 並び替えモーダルを開くボタン -->
+        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#sortModal">
+            並び替え
+        </button>
 
     </div>
 
@@ -78,4 +76,51 @@
     </div>
 
 </div>
+
+<!-- ▼▼▼ 並び替えモーダル ▼▼▼ -->
+<div class="modal fade" id="sortModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">並び替え条件</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{ route('products.index') }}" method="GET">
+
+                    <!-- 検索キーワードを保持 -->
+                    <input type="hidden" name="keyword" value="{{ request('keyword') }}">
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sort" value="low"
+                            id="sortLow" {{ request('sort') === 'low' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="sortLow">価格が安い順</label>
+                    </div>
+
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="radio" name="sort" value="high"
+                            id="sortHigh" {{ request('sort') === 'high' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="sortHigh">価格が高い順</label>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary">適用</button>
+
+                        <!-- 並び替えリセット（sort を空にして再検索） -->
+                        <a href="{{ route('products.index', ['keyword' => request('keyword')]) }}"
+                            class="btn btn-outline-danger">
+                            リセット
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ▲▲▲ 並び替えモーダル ▲▲▲ -->
+
 @endsection

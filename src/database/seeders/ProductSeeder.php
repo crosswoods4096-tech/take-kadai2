@@ -55,7 +55,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'ブドウ',
                 'price' => 750,
-                'image' => 'fruits/grape.png',
+                'image' => 'fruits/grapes.png',
                 'description' => 'ブドウの中でも人気の高い国産の「巨峰」を使用しています。高い糖度と適度な酸味が魅力で、鮮やかなパープルで見た目も可愛い商品です。もぎたてフルーツのスムージーをお召し上がりください！',
             ],
             [
