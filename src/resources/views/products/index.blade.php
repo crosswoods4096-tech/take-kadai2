@@ -33,9 +33,11 @@
             <div class="card shadow-sm position-relative" style="overflow: hidden;">
 
                 <!-- 商品画像 -->
-                <img src="{{ asset('storage/' . $product->image) }}"
-                    alt="{{ $product->name }}"
-                    style="width: 100%; height: 250px; object-fit: cover;">
+                <a href="{{ route('products.show', $product->id) }}">
+                    <img src="{{ asset('storage/' . $product->image) }}"
+                        alt="{{ $product->name }}"
+                        style="width: 100%; height: 250px; object-fit: cover;">
+                </a>
 
                 <!-- 商品名（左下） -->
                 <div style="
