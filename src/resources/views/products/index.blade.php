@@ -6,123 +6,82 @@
     <!-- 見出し -->
     <h1 class="mb-4 fw-bold">商品一覧</h1>
 
-    <!-- 上部操作エリア -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
-        <!-- 検索フォーム -->
-        <form action="{{ route('products.index') }}" method="GET" class="d-flex" style="gap: 8px;">
-            <input type="text" name="keyword" class="form-control"
-                placeholder="商品名で検索"
-                value="{{ request('keyword') }}">
-            <button class="btn btn-primary">検索</button>
-        </form>
-
-        <!-- 並び替えモーダルを開くボタン -->
-        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#sortModal">
-            並び替え
-        </button>
-
+    <!-- 上部：商品登録ボタン（右上） -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('products.create') }}" class="btn btn-success">
+            ＋ 商品を登録
+        </a>
     </div>
 
-    <!-- 商品一覧グリッド -->
-    <div class="row g-4">
+    <!-- 2カラム構成 -->
+    <div class="row">
 
-        @foreach ($products as $product)
-        <div class="col-md-4 col-lg-3">
+        <!-- 左カラム：検索 + 並び替え -->
+        <div class="col-md-3 mb-4">
 
-            <div class="card shadow-sm position-relative" style="overflow: hidden;">
+            <!-- 検索フォーム -->
+            <form action="{{ route('products.index') }}" method="GET" class="mb-3">
+                <label class="form-label fw-bold">商品名で検索</label>
+                <input type="text" name="keyword" class="form-control"
+                    value="{{ request('keyword') }}" placeholder="キーワードを入力">
+                <button class="btn btn-primary w-100 mt-2">検索</button>
+            </form>
 
-                <!-- 商品画像 -->
-                <a href="{{ route('products.show', $product->id) }}">
-                    <img src="{{ asset('storage/' . $product->image) }}"
-                        alt="{{ $product->name }}"
-                        style="width: 100%; height: 250px; object-fit: cover;">
-                </a>
+            <!-- 並び替え -->
+            <form action="{{ route('products.index') }}" method="GET">
+                <label class="form-label fw-bold">並び替え</label>
+                <select name="sort" class="form-select" onchange="this.form.submit()">
+                    <option value="">選択してください</option>
+                    <option value="low" {{ request('sort') === 'low' ? 'selected' : '' }}>価格が安い順</option>
+                    <option value="high" {{ request('sort') === 'high' ? 'selected' : '' }}>価格が高い順</option>
+                </select>
 
-                <!-- 商品名（左下） -->
-                <div style="
-                    position: absolute;
-                    bottom: 10px;
-                    left: 10px;
-                    color: white;
-                    font-size: 20px;
-                    font-weight: bold;
-                    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-                ">
-                    {{ $product->name }}
+                <!-- 検索キーワードを保持 -->
+                <input type="hidden" name="keyword" value="{{ request('keyword') }}">
+            </form>
+
+        </div>
+
+        <!-- 右カラム：商品カード一覧 -->
+        <div class="col-md-9">
+
+            <div class="row g-4">
+                @foreach ($products as $product)
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card shadow-sm h-100">
+
+                        <!-- 商品画像 -->
+                        <img src="{{ asset('storage/' . $product->image) }}"
+                            alt="{{ $product->name }}"
+                            style="width: 100%; height: 220px; object-fit: cover;">
+
+                        <!-- 白い情報エリア -->
+                        <div class="p-3 bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="fw-bold text-dark" style="font-size: 17px;">
+                                    {{ $product->name }}
+                                </div>
+                                <div class="fw-bold text-dark" style="font-size: 17px;">
+                                    ¥{{ number_format($product->price) }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
+                @endforeach
+            </div>
 
-                <!-- 価格（右下） -->
-                <div style="
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px;
-                    color: white;
-                    font-size: 20px;
-                    font-weight: bold;
-                    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-                ">
-                    ¥{{ number_format($product->price) }}
-                </div>
-
+            <!-- ページネーション -->
+            <div class="mt-4 d-flex justify-content-center">
+                {{ $products->links('pagination::bootstrap-4') }}
             </div>
 
         </div>
-        @endforeach
 
-    </div>
-
-    <!-- ページネーション -->
-    <div class="mt-4 d-flex justify-content-center">
-        {{ $products->links('pagination::bootstrap-4') }}
     </div>
 
 </div>
-
-<!-- ▼▼▼ 並び替えモーダル ▼▼▼ -->
-<div class="modal fade" id="sortModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">並び替え条件</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body">
-                <form action="{{ route('products.index') }}" method="GET">
-
-                    <!-- 検索キーワードを保持 -->
-                    <input type="hidden" name="keyword" value="{{ request('keyword') }}">
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sort" value="low"
-                            id="sortLow" {{ request('sort') === 'low' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="sortLow">価格が安い順</label>
-                    </div>
-
-                    <div class="form-check mt-2">
-                        <input class="form-check-input" type="radio" name="sort" value="high"
-                            id="sortHigh" {{ request('sort') === 'high' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="sortHigh">価格が高い順</label>
-                    </div>
-
-                    <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn btn-primary">適用</button>
-
-                        <!-- 並び替えリセット（sort を空にして再検索） -->
-                        <a href="{{ route('products.index', ['keyword' => request('keyword')]) }}"
-                            class="btn btn-outline-danger">
-                            リセット
-                        </a>
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- ▲▲▲ 並び替えモーダル ▲▲▲ -->
-
 @endsection
