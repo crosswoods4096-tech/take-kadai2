@@ -48,8 +48,8 @@
                     <div class="d-flex gap-3">
                         @foreach ($seasons as $season)
                         <label>
-                            <input type="checkbox" name="seasons[]" value="{{ $season->id }}">
-                            {{ in_array($season->id, $selectedSeasons) ? 'checked' : '' }}>
+                            <input type="checkbox" name="season[]" value="{{ $season->id }}"
+                                {{ in_array($season->id, $selectedSeasons) ? 'checked' : '' }}>
                             {{ $season->name }}
                         </label>
                         @endforeach

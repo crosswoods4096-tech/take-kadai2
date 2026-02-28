@@ -54,10 +54,10 @@
                 @foreach ($seasons as $season)
                 <label class="form-check-label d-flex align-items-center" style="gap: 4px;">
                     <input type="checkbox"
+                        class="form-check-input"
                         name="seasons[]"
                         value="{{ $season->id }}"
-                        class="form-check-input"
-                        {{ in_array($season->id, Arr::wrap(old('seasons'))) ? 'checked' : '' }}>
+                        @checked(in_array($season->id, $selectedSeasons))>
                     <span>{{ $season->name }}</span>
                 </label>
                 @endforeach
