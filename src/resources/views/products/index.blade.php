@@ -49,26 +49,31 @@
                 @foreach ($products as $product)
                 <div class="col-md-6 col-lg-4">
 
-                    <div class="card shadow-sm h-100">
+                    <!-- カード全体をリンク化 -->
+                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark">
 
-                        <!-- 商品画像 -->
-                        <img src="{{ asset('storage/' . $product->image) }}"
-                            alt="{{ $product->name }}"
-                            style="width: 100%; height: 220px; object-fit: cover;">
+                        <div class="card shadow-sm h-100">
 
-                        <!-- 白い情報エリア -->
-                        <div class="p-3 bg-white">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold text-dark" style="font-size: 17px;">
-                                    {{ $product->name }}
-                                </div>
-                                <div class="fw-bold text-dark" style="font-size: 17px;">
-                                    ¥{{ number_format($product->price) }}
+                            <!-- 商品画像 -->
+                            <img src="{{ asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}"
+                                style="width: 100%; height: 240px; object-fit: cover;">
+
+                            <!-- 白い情報エリア -->
+                            <div class="p-3 bg-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold text-dark" style="font-size: 18px;">
+                                        {{ $product->name }}
+                                    </div>
+                                    <div class="fw-bold text-dark" style="font-size: 18px;">
+                                        ¥{{ number_format($product->price) }}
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
 
-                    </div>
+                    </a>
 
                 </div>
                 @endforeach
