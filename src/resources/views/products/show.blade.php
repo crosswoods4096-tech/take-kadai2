@@ -48,7 +48,7 @@
                     <div class="d-flex gap-3">
                         @foreach ($seasons as $season)
                         <label>
-                            <input type="checkbox" name="season[]" value="{{ $season->id }}"
+                            <input type="checkbox" name="seasons[]" value="{{ $season->id }}"
                                 {{ in_array($season->id, $selectedSeasons) ? 'checked' : '' }}>
                             {{ $season->name }}
                         </label>
@@ -74,11 +74,11 @@
             {{-- ★ 下部ボタンエリア（フォームの外） --}}
             <div class="d-flex justify-content-between align-items-center mt-4">
 
-                <!-- 左側：戻る -->
+                <!-- 左側：商品一覧へ戻る -->
                 <div>
-                    <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
-                        戻る
-                    </button>
+                    <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">
+                        商品一覧へ戻る
+                    </a>
                 </div>
 
                 <!-- 右側：更新 + 削除 -->
