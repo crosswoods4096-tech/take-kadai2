@@ -33,6 +33,10 @@
                     <label class="form-label fw-bold">商品名</label>
                     <input type="text" name="name" class="form-control"
                         value="{{ old('name', $product->name) }}">
+
+                    @error('name')
+                    <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- 値段 -->
@@ -40,6 +44,10 @@
                     <label class="form-label fw-bold">値段</label>
                     <input type="number" name="price" class="form-control"
                         value="{{ old('price', $product->price) }}">
+
+                    @error('price')
+                    <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- 季節（複数選択可） -->
@@ -47,26 +55,47 @@
                     <label class="form-label fw-bold">旬の季節</label>
                     <div class="d-flex gap-3">
                         @foreach ($seasons as $season)
-                        <label>
-                            <input type="checkbox" name="seasons[]" value="{{ $season->id }}"
-                                {{ in_array($season->id, $selectedSeasons) ? 'checked' : '' }}>
-                            {{ $season->name }}
+                        <label class="d-flex align-items-center" style="gap: 4px;">
+
+
+                            @php
+                            $checkedSeasons = old('seasons', $selectedSeasons ?? []);
+                            $checkedSeasons = is_array($checkedSeasons) ? $checkedSeasons : (array) $checkedSeasons;
+                            @endphp
+
+                            <input type="checkbox"
+                                name="seasons[]"
+                                value="{{ $season->id }}"
+                                {{ in_array($season->id, $checkedSeasons) ? 'checked' : '' }}>
+
+                            <span>{{ $season->name }}</span>
                         </label>
                         @endforeach
                     </div>
+
+                    @error('seasons')
+                    <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- 画像差し替え -->
                 <div class="mb-3">
                     <label class="form-label fw-bold">画像を差し替える</label>
                     <input type="file" name="image" class="form-control">
+
+                    @error('image')
+                    <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <!-- 説明文（画像差し替えの下） -->
+                <!-- 説明文 -->
                 <div class="mb-3">
                     <label class="form-label fw-bold">商品説明</label>
-                    <textarea name="description" rows="5" class="form-control">
-                    {{ old('description', $product->description) }}</textarea>
+                    <textarea name="description" rows="5" class="form-control">{{ old('description', $product->description) }}</textarea>
+
+                    @error('description')
+                    <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
 
             </form>
@@ -89,7 +118,7 @@
                         更新
                     </button>
 
-                    <!-- 削除ボタン（ゴミ箱アイコン） -->
+                    <!-- 削除ボタン -->
                     <form action="{{ route('products.destroy', $product->id) }}" method="POST"
                         onsubmit="return confirm('本当に削除しますか？');">
                         @csrf
@@ -103,9 +132,10 @@
                 </div>
 
             </div>
-
         </div>
+
     </div>
+</div>
 
 </div>
 @endsection

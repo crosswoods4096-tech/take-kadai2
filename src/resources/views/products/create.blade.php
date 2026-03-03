@@ -53,11 +53,15 @@
             <div class="d-flex flex-wrap" style="gap: 12px;">
                 @foreach ($seasons as $season)
                 <label class="form-check-label d-flex align-items-center" style="gap: 4px;">
+                    @php
+                    $checkedSeasons = old('seasons', $selectedSeasons ?? []);
+                    $checkedSeasons = is_array($checkedSeasons) ? $checkedSeasons : (array) $checkedSeasons;
+                    @endphp
+
                     <input type="checkbox"
-                        class="form-check-input"
                         name="seasons[]"
                         value="{{ $season->id }}"
-                        @checked(in_array($season->id, $selectedSeasons))>
+                        {{ in_array($season->id, $checkedSeasons) ? 'checked' : '' }}>
                     <span>{{ $season->name }}</span>
                 </label>
                 @endforeach

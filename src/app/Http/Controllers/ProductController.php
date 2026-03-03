@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Season;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\StoreProductRequest;
 
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,9 @@ class ProductController extends Controller
     public function create()
     {
         $seasons = Season::all();
-        return view('products.create', compact('seasons'));
+        $selectedSeasons = []; // 新規登録なので空
+
+        return view('products.create', compact('seasons', 'selectedSeasons'));
     }
 
     public function store(StoreProductRequest $request)
@@ -62,39 +65,38 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', '商品を登録しました！');
     }
 
-    public function show(Product $product)
+    public function show($id)
     {
+        $product = Product::with('seasons')->findOrFail($id);
         $seasons = Season::all();
+
+        // ★ ここが重要
         $selectedSeasons = $product->seasons->pluck('id')->toArray();
 
         return view('products.show', compact('product', 'seasons', 'selectedSeasons'));
     }
 
-    public function update(Request $request, Product $product)
-    {
-        $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'price'       => 'required|integer|min:0',
-            'description' => 'required|string',
-            'image'       => 'nullable|image|max:2048',  // ★必須ではない
-            'seasons'     => 'required|array',           // ★store と統一
-            'seasons.*'   => 'integer|exists:seasons,id',
-        ]);
 
-        // 画像差し替え
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        $validated = $request->validated();
+
+        // 画像差し替え（先にやる）
         if ($request->hasFile('image')) {
+
             // 古い画像を削除
             if ($product->image && Storage::exists('public/' . $product->image)) {
                 Storage::delete('public/' . $product->image);
             }
 
+            // 新しい画像を保存
             $validated['image'] = $request->file('image')->store('products', 'public');
         } else {
-            // 画像未変更なら元の画像を維持
+            // 画像を変更しない場合は元のまま
             $validated['image'] = $product->image;
         }
 
-        // 商品情報更新
+        // ここで初めて update
         $product->update([
             'name'        => $validated['name'],
             'price'       => $validated['price'],
@@ -108,13 +110,14 @@ class ProductController extends Controller
         return redirect()->route('products.show', $product->id)
             ->with('success', '商品情報を更新しました');
     }
+
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
 
         // 画像ファイル削除（存在する場合）
-        if ($product->image && \Storage::exists('public/' . $product->image)) {
-            \Storage::delete('public/' . $product->image);
+        if ($product->image && Storage::exists('public/' . $product->image)) {
+            Storage::delete('public/' . $product->image);
         }
 
         // 商品データ削除
