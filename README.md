@@ -1,5 +1,5 @@
 ## アプリケーション名
-CoachTech 
+CoachTech mogitate
 
 ## 環境構築
 リポジトリからダウンロード
@@ -43,7 +43,8 @@ storageディレクトリの書き込み権限を設定
 ```
 chmod -R 777 storage
 ```
+## 開発環境
+・商品一覧画面：http://localhost/products
 
 ## ER図
-![ER図](ER.drawio.png)
-
+・ER図：(src/docs/ER.drawio.png)
