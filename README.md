@@ -47,4 +47,4 @@ chmod -R 777 storage
 ・商品一覧画面：http://localhost/products
 
 ## ER図
-・ER図：(src/docs/ER.drawio.png)
+![ER図](src/docs/ER.drawio.png)
