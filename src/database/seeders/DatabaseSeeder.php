@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Season;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            ProductSeeder::class,
+            SeasonSeeder::class,
             ProductSeeder::class,
             ProductSeasonSeeder::class,
         ]);
