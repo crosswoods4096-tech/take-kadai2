@@ -27,7 +27,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name.required'        => '商品名は必須です。',
-            'price.required'       => '値段は必須です。',
+            'price.required'       => '値段を入力してください。',
             'price.integer'        => '値段は数値で入力してください。',
             'price.min'            => '値段は0円以上で入力してください。',
             'price.max'            => '値段は10000円以内で入力してください。',
