@@ -20,7 +20,10 @@
 
         {{-- 商品名 --}}
         <div class="mb-3">
-            <label class="form-label fw-bold">商品名</label>
+            <label class="form-label fw-bold">
+                商品名
+                <span class="badge bg-danger ms-2">必須</span>
+            </label>
             <input type="text" name="name" class="form-control" value="{{ old('name') }}">
         </div>
         @error('name')
@@ -29,7 +32,10 @@
 
         {{-- 値段 --}}
         <div class="mb-3">
-            <label class="form-label fw-bold">値段（円）</label>
+            <label class="form-label fw-bold">
+                値段（円）
+                <span class="badge bg-danger ms-2">必須</span>
+            </label>
             <input type="number" name="price" class="form-control" value="{{ old('price') }}">
         </div>
         @error('price')
@@ -38,17 +44,23 @@
 
         {{-- 商品画像 --}}
         <div class="mb-3">
-            <label class="form-label fw-bold">商品画像</label>
+            <label class="form-label fw-bold">
+                商品画像
+                <span class="badge bg-danger ms-2">必須</span>
+            </label>
             <input type="file" name="image" class="form-control" accept="image/*">
         </div>
-
         @error('image')
         <div class="text-danger small">{{ $message }}</div>
         @enderror
 
-        {{-- 旬の季節（複数選択） --}}
+        {{-- 旬の季節 --}}
         <div class="mb-3">
-            <label class="form-label fw-bold">旬の季節（複数選択可）</label>
+            <label class="form-label fw-bold">
+                旬の季節
+                <span class="badge bg-danger ms-2">必須</span>
+                <span style="color: red;">複数選択可</span>
+            </label>
 
             <div class="d-flex flex-wrap" style="gap: 12px;">
                 @foreach ($seasons as $season)
@@ -73,15 +85,25 @@
 
         {{-- 商品説明文 --}}
         <div class="mb-3">
-            <label class="form-label fw-bold">商品説明文</label>
+            <label class="form-label fw-bold">
+                商品説明文
+                <span class="badge bg-danger ms-2">必須</span>
+            </label>
             <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
             @error('description')
             <div class="text-danger small">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="text-end">
-            <button class="btn btn-primary px-4">登録する</button>
+        <div class="d-flex justify-content-center mt-4" style="gap: 16px;">
+            <a href="{{ route('products.index') }}" class="btn btn-outline-secondary px-4">
+                戻る
+            </a>
+
+            <button class="btn px-4"
+                style="background-color: #FFD700; color: #000; font-weight: bold;">
+                登録する
+            </button>
         </div>
 
     </form>
