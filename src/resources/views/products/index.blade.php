@@ -8,7 +8,9 @@
 
     <!-- 上部：商品登録ボタン（右上） -->
     <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('products.create') }}" class="btn btn-success">
+        <a href="{{ route('products.create') }}"
+            class="btn px-4"
+            style="background-color: #FFD700; color: #000; font-weight: bold;">
             ＋ 商品を登録
         </a>
     </div>
@@ -23,15 +25,18 @@
             <form action="{{ route('products.index') }}" method="GET" class="mb-3">
                 <label class="form-label fw-bold">商品名で検索</label>
                 <input type="text" name="keyword" class="form-control"
-                    value="{{ request('keyword') }}" placeholder="キーワードを入力">
-                <button class="btn btn-primary w-100 mt-2">検索</button>
+                    value="{{ request('keyword') }}" placeholder="商品名で検索">
+                <button class="btn w-100 mt-2"
+                    style="background-color: #FFD700; color: #000; font-weight: bold;">
+                    検索
+                </button>
             </form>
 
             <!-- 並び替え -->
             <form action="{{ route('products.index') }}" method="GET">
-                <label class="form-label fw-bold">並び替え</label>
+                <label class="form-label fw-bold">価格順で表示</label>
                 <select name="sort" class="form-select" onchange="this.form.submit()">
-                    <option value="">選択してください</option>
+                    <option value="">価格順で並び替え</option>
                     <option value="low" {{ request('sort') === 'low' ? 'selected' : '' }}>価格が安い順</option>
                     <option value="high" {{ request('sort') === 'high' ? 'selected' : '' }}>価格が高い順</option>
                 </select>
